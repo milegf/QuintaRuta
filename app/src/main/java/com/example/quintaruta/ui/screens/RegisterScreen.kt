@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.quintaruta.ui.common.UiState
+import com.example.quintaruta.utils.UiState
 import com.example.quintaruta.viewmodel.RegisterViewModel
 
 @Composable
@@ -76,7 +76,7 @@ fun RegisterScreen(onRegisterSuccess: () -> Unit, registerViewModel: RegisterVie
 
             LaunchedEffect(registerState) {
                 when (val state = registerState) {
-                    is UiState.Success -> {
+                    is UiState.Success<*> -> {
                         snackbarHostState.showSnackbar("¡Registro exitoso!")
                         onRegisterSuccess()
                         registerViewModel.resetState()

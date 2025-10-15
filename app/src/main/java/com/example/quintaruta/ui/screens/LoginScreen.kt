@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.quintaruta.ui.common.UiState
+import com.example.quintaruta.utils.UiState
 import com.example.quintaruta.viewmodel.LoginViewModel
 
 @Composable
@@ -80,7 +80,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
 
             LaunchedEffect(loginState) {
                 when (val state = loginState) {
-                    is UiState.Success -> {
+                    is UiState.Success<*> -> {
                         onLoginSuccess()
                         loginViewModel.resetState()
                     }

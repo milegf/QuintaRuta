@@ -13,12 +13,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quintaruta.utils.UiState
 import com.example.quintaruta.viewmodel.RegisterViewModel
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun RegisterScreen(onRegisterSuccess: () -> Unit, registerViewModel: RegisterViewModel = viewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val registerState by registerViewModel.registerState.observeAsState(UiState.Idle)
+    val coroutineScope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -41,16 +45,21 @@ fun RegisterScreen(onRegisterSuccess: () -> Unit, registerViewModel: RegisterVie
                 modifier = Modifier.size(100.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
+
             Spacer(modifier = Modifier.height(24.dp))
+
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Correo Electrónico") },
                 placeholder = { Text("ej: usuario@dominio.com") },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
+                enabled = !isLoading,
+                singleLine = true
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -58,17 +67,26 @@ fun RegisterScreen(onRegisterSuccess: () -> Unit, registerViewModel: RegisterVie
                 placeholder = { Text("Mínimo 6 caracteres") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
+                enabled = !isLoading,
+                singleLine = true
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             if (isLoading) {
                 CircularProgressIndicator()
             } else {
                 Button(
-                    onClick = { registerViewModel.register(email, password) },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoading
+                    onClick = {
+                        if (email.isNotBlank() && password.length >= 6) {
+                            registerViewModel.register(email, password)
+                        } else {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar("Revisa los datos ingresados")
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Registrarse")
                 }

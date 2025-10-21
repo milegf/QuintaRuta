@@ -13,14 +13,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quintaruta.utils.UiState
 import com.example.quintaruta.viewmodel.LoginViewModel
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, loginViewModel: LoginViewModel = viewModel()) {
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val loginState by loginViewModel.loginState.observeAsState(UiState.Idle)
-
+    val isLoading = loginState is UiState.Loading
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -41,16 +45,21 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
                 modifier = Modifier.size(100.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
+
             Spacer(modifier = Modifier.height(24.dp))
+
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Correo Electrónico") },
                 placeholder = { Text("ej: usuario@dominio.com") },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
+                enabled = !isLoading,
+                singleLine = true
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -58,21 +67,34 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
                 placeholder = { Text("Mínimo 6 caracteres") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
+                enabled = !isLoading,
+                singleLine = true
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             if (isLoading) {
                 CircularProgressIndicator()
             } else {
                 Button(
-                    onClick = { loginViewModel.login(email, password) },
+                    onClick = {
+                        if (email.isNotBlank() && password.isNotBlank()) {
+                            loginViewModel.login(email, password)
+                        } else {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar("Completa todos los campos")
+                            }
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
+                    // TODO: ARREGLAR PARA QUE FUNCIONE ISLOADING
                     enabled = !isLoading
                 ) {
                     Text("Iniciar Sesión")
                 }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             TextButton(onClick = onNavigateToRegister, enabled = !isLoading) {
                 Text("¿No tienes una cuenta? Regístrate")

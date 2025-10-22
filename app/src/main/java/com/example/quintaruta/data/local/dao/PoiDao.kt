@@ -21,4 +21,10 @@ interface PoiDao {
 
     @Query("SELECT * FROM poi WHERE id = :id")
     fun getPoiById(id: Long): Flow<PoiEntity?>
+
+    @Query("SELECT * FROM poi")
+    fun getAllPois(): List<PoiEntity>
+
+    @Insert
+    suspend fun insertAll(pois: List<PoiEntity>)
 }

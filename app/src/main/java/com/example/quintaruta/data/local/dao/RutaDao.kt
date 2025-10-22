@@ -20,4 +20,11 @@ interface RutaDao {
 
     @Query("SELECT * FROM ruta WHERE id = :id")
     fun getRutaById(id: Long): Flow<RutaEntity?>
+
+    @Insert
+    suspend fun insertAll(rutas: List<RutaEntity>)
+
+    // (!) METODO EXCLUSIVO PARA EL SEEDER
+    @Query("SELECT * FROM ruta")
+    suspend fun getAllRutasList(): List<RutaEntity>
 }

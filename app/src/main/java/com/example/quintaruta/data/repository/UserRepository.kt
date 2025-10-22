@@ -1,32 +1,29 @@
 package com.example.quintaruta.data.repository
 
-import android.content.ContentValues
 import android.content.Context
-import com.example.quintaruta.data.local.DatabaseHelper
+import androidx.room.Room
+import com.example.quintaruta.data.local.AppDatabase
+import com.example.quintaruta.data.local.entity.UserEntity
 
 class UserRepository(private val context: Context) {
 
-    private val dbHelper = DatabaseHelper(context)
+    private val db = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java,
+        "quintaruta.db"
+    ).build()
 
-    // Preferencias para estado de sesión
+    private val userDao = db.userDao()
+
     private val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
     private val KEY_LOGGED_IN = "logged_in"
     private val KEY_EMAIL = "email"
 
     fun isLoggedIn(): Boolean = prefs.getBoolean(KEY_LOGGED_IN, false)
 
-    fun login(email: String, password: String): Boolean {
-        val db = dbHelper.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT * FROM ${DatabaseHelper.TABLE_USERS} " +
-                    "WHERE ${DatabaseHelper.COLUMN_EMAIL} = ? " +
-                    "AND ${DatabaseHelper.COLUMN_PASSWORD} = ?",
-            arrayOf(email, password)
-        )
-
-        val success = cursor.moveToFirst()
-        cursor.close()
-        db.close()
+    suspend fun login(email: String, password: String): Boolean {
+        val user = userDao.login(email, password)
+        val success = user != null
 
         if (success) {
             prefs.edit()
@@ -37,15 +34,10 @@ class UserRepository(private val context: Context) {
         return success
     }
 
-    fun register(email: String, password: String): Boolean {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(DatabaseHelper.COLUMN_EMAIL, email)
-            put(DatabaseHelper.COLUMN_PASSWORD, password)
-        }
-        val newRowId = db.insert(DatabaseHelper.TABLE_USERS, null, values)
-        db.close()
-        return newRowId != -1L
+    suspend fun register(email: String, password: String): Boolean {
+        val userEntity = UserEntity(email = email, password = password)
+        userDao.insert(userEntity)
+        return true
     }
 
     fun logout() {
@@ -56,5 +48,4 @@ class UserRepository(private val context: Context) {
     }
 
     fun getLoggedEmail(): String? = prefs.getString(KEY_EMAIL, null)
-
 }

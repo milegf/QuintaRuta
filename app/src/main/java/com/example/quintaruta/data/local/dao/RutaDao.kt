@@ -15,9 +15,9 @@ interface RutaDao {
     @Delete
     suspend fun delete(rutaEntity: RutaEntity)
 
-    @Query("SELECT * FROM rutas")
+    @Query("SELECT * FROM ruta")
     fun getAllRutas(): Flow<List<RutaEntity>>
 
-    @Query("SELECT * FROM rutas WHERE id = :id")
-    fun getRutaById(id: Int): Flow<RutaEntity?>
+    @Query("SELECT * FROM ruta WHERE id = :id")
+    fun getRutaById(id: Long): Flow<RutaEntity?>
 }

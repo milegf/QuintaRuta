@@ -1,11 +1,12 @@
-package com.example.quintaruta.model
+package com.example.quintaruta.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.WorkspacePremium
+import com.example.quintaruta.data.model.Badge
 
-// Este objeto contiene una lista de todas las insignias que se pueden ganar en la app
+// TODO: LAS BADGES SON SÍMBOLOS DE LOS POIs, HAY QUE CAMBIAR ESTO
 object AvailableBadges {
     val all = listOf(
         Badge(

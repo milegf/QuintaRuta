@@ -1,4 +1,4 @@
-package com.example.quintaruta.utils
+package com.example.quintaruta.util
 
 import android.util.Patterns
 
@@ -9,8 +9,7 @@ object ValidationUtil {
     }
 
     fun isValidPassword(password: String): Boolean {
-        // For now, we'll just check for a minimum length.
-        // This can be expanded with more rules (uppercase, numbers, etc.)
+        // TODO: FALTAN IMPLEMENTAR MÁS METODOS DE VALIDACIONES
         return password.length >= 6
     }
 }

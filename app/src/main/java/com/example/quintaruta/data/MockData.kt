@@ -1,9 +1,8 @@
 package com.example.quintaruta.data
 
 import com.example.quintaruta.R
-import com.example.quintaruta.model.PointOfInterest
 
-// Datos de prueba para simular la base de datos
+// TODO: CAMBIAR LOS DATOS POR LAS RUTAS CON LAS BADGES CREADAS (MIRADORES Y COSTA)
 object MockData {
     val pois = listOf(
         PointOfInterest(

@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.quintaruta.data.repository.UserRepository
-import com.example.quintaruta.utils.UiState
-import com.example.quintaruta.utils.ValidationUtil
+import com.example.quintaruta.util.UiState
+import com.example.quintaruta.util.ValidationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

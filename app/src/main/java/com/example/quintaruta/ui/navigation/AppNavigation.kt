@@ -1,45 +1,15 @@
 package com.example.quintaruta.ui.navigation
 
-<<<<<<< HEAD
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-=======
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
->>>>>>> origin/2.3-2.4-terminado
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quintaruta.data.repository.UserRepository
-<<<<<<< HEAD
-=======
-import com.example.quintaruta.ui.screens.CreateOrEditRouteScreen
-import com.example.quintaruta.ui.screens.EditProfileScreen
->>>>>>> origin/2.3-2.4-terminado
-import com.example.quintaruta.ui.screens.ExploreScreen
-import com.example.quintaruta.ui.screens.LoginScreen
-import com.example.quintaruta.ui.screens.MainScreen
-import com.example.quintaruta.ui.screens.MapScreen
-import com.example.quintaruta.ui.screens.PoiDetailScreen
-import com.example.quintaruta.ui.screens.ProfileScreen
-import com.example.quintaruta.ui.screens.RegisterScreen
-import com.example.quintaruta.ui.screens.RouteDetailScreen
-import com.example.quintaruta.ui.screens.TriviaScreen
-<<<<<<< HEAD
-import com.example.quintaruta.ui.screens.CreateOrEditRouteScreen
-=======
-import com.example.quintaruta.viewmodel.CreateOrEditRouteViewModel
-import com.example.quintaruta.viewmodel.ProfileViewModel
->>>>>>> origin/2.3-2.4-terminado
+import com.example.quintaruta.ui.screens.*
 
 @Composable
 fun AppNavigation() {
@@ -58,209 +28,69 @@ fun AppNavigation() {
         }
 
         composable("register") {
-            RegisterScreen(
-                onRegisterSuccess = { navController.popBackStack() }
-            )
+            RegisterScreen(onRegisterSuccess = { navController.popBackStack() })
         }
 
         composable("main") {
             MainScreen(
                 onOpenExplore = { navController.navigate("explore") },
-                onOpenProfile = { navController.navigate("profile") },
-                onCreateRoute = { navController.navigate("create_route") }
-<<<<<<< HEAD
-                // onLogout = { userRepo.logout(); navController.navigate("login") { popUpTo("main"){ inclusive = true } } }
-=======
->>>>>>> origin/2.3-2.4-terminado
+                onCreateRoute = { navController.navigate("create_route") },
+                onOpenProfile = { navController.navigate("profile") }
             )
         }
 
         composable("explore") {
-            ExploreScreen(
-                onRouteClick = { routeId -> navController.navigate("route_detail/$routeId") },
-                onCreateRoute = { navController.navigate("create_route") }
-            )
+            ExploreScreen(onRutaClick = { ruta ->
+                navController.navigate("routeDetail/${ruta.id}")
+            })
         }
-
-<<<<<<< HEAD
-        // VERSION DEMO
-        composable("profile") {
-            ProfileScreen(
-                userName = "Patana",
-                userEmail = "patana@trufillo.cl",
-                profileImageUrl = null,
-                userRoutes = emptyList(), // o lista vacía
-                onEditRoute = { routeId ->
-                    navController.navigate("edit_route/$routeId")
-                }
-            )
-        }
-
-        // TODO: CAMBIAR PROFILE A VERSION FINAL
-        /*composable("profile") {
-            val profileViewModel: ProfileViewModel = viewModel()
-            val user = profileViewModel.user
-            val routes = profileViewModel.userRoutes
-
-            ProfileScreen(
-                userName = user.name,
-                userEmail = user.email,
-                profileImageUrl = user.photoUrl,
-                userRoutes = routes,
-                onEditRoute = { routeId ->
-                    navController.navigate("edit_route/$routeId")
-                }
-            )
-        }*/
-
 
         composable("create_route") {
             CreateOrEditRouteScreen(
                 routeId = null,
-                onSaved = { newId -> navController.navigate("route_detail/$newId") },
-=======
-        composable("profile") {
-            val profileViewModel: ProfileViewModel = viewModel()
-            val uiState by profileViewModel.uiState.collectAsState()
-
-            // Forzamos la recarga de datos al entrar en la pantalla
-            LaunchedEffect(Unit) {
-                profileViewModel.loadProfileData()
-            }
-
-            ProfileScreen(
-                uiState = uiState,
-                onEditRoute = { routeId -> navController.navigate("edit_route/$routeId") },
-                onDeleteRoute = { routeId -> profileViewModel.deleteRoute(routeId) },
-                onEditProfileClick = { navController.navigate("edit_profile") }
-            )
-        }
-
-        composable("edit_profile") {
-            val editProfileViewModel: ProfileViewModel = viewModel()
-            val uiState by editProfileViewModel.uiState.collectAsState()
-
-            EditProfileScreen(
-                currentName = uiState.userName,
-                onSave = {
-                    editProfileViewModel.updateUserName(it)
-                    navController.popBackStack()
-                },
-                onCancel = { navController.popBackStack() }
-            )
-        }
-
-        composable("create_route") {
-            CreateOrEditRouteScreen(
-                routeId = null, // null para indicar que es una creación
-                onSaved = { newId -> navController.navigate("route_detail/$newId") { popUpTo("explore") } },
->>>>>>> origin/2.3-2.4-terminado
+                onSaved = { newId -> navController.navigate("routeDetail/$newId") },
                 onCancel = { navController.popBackStack() }
             )
         }
 
         composable(
-            route = "edit_route/{routeId}",
-<<<<<<< HEAD
-            arguments = listOf(navArgument("routeId") { type = NavType.LongType })) {
-                back -> val routeId = back.arguments?.getLong("routeId") ?: 0L
-                CreateOrEditRouteScreen(
-                    routeId = routeId,
-                    onSaved = { navController.popBackStack() },
-                    onCancel = { navController.popBackStack() }
-                )
-            }
-
-        composable(
-            route = "route_detail/{routeId}",
-            arguments = listOf(navArgument("routeId") { type = NavType.LongType }) ) {
-                back -> val routeId = back.arguments?.getLong("routeId") ?: 0L
-                RouteDetailScreen(
-                    routeId = routeId,
-                    onPoiClick = { poiId -> navController.navigate("poi_detail/$routeId/$poiId") },
-                    onBack = { navController.popBackStack() }
-                )
-            }
-=======
-            arguments = listOf(navArgument("routeId") { type = NavType.LongType })
-        ) {
-            val routeId = it.arguments?.getLong("routeId") ?: 0L
-            CreateOrEditRouteScreen(
-                routeId = routeId,
-                onSaved = {
-                    // Navegación especial para forzar la actualización del perfil
-                    navController.popBackStack()
-                    navController.navigate("profile") { popUpTo("profile") { inclusive = true } }
-                },
-                onCancel = { navController.popBackStack() }
-            )
-        }
-
-        composable(
-            route = "route_detail/{routeId}",
+            "edit_route/{routeId}",
             arguments = listOf(navArgument("routeId") { type = NavType.LongType })
         ) { back ->
             val routeId = back.arguments?.getLong("routeId") ?: 0L
-            RouteDetailScreen(
+            CreateOrEditRouteScreen(
                 routeId = routeId,
-                onReturnToHome = { navController.navigate("main") { popUpTo("main") { inclusive = true } } }
+                onSaved = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() }
             )
         }
->>>>>>> origin/2.3-2.4-terminado
+
+        composable("routeDetail/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id")?.toInt() ?: 0
+            RouteDetailScreen(
+                routeId = id,
+                onBack = { navController.popBackStack() },
+                onPoiClick = { poi ->
+                    navController.navigate("poi_detail/$id/${poi.id}")
+                }
+            )
+        }
 
         composable(
             route = "poi_detail/{routeId}/{poiId}",
             arguments = listOf(
                 navArgument("routeId") { type = NavType.LongType },
-<<<<<<< HEAD
-                navArgument("poiId") { type = NavType.LongType })) {
-                back ->
-                    val routeId = back.arguments?.getLong("routeId") ?: 0L
-                    val poiId = back.arguments?.getLong("poiId") ?: 0L
-                PoiDetailScreen(
-                    routeId = routeId,
-                    poiId = poiId,
-                    onOpenMap = { navController.navigate("map/$poiId") },
-                    onStartTrivia = { navController.navigate("trivia/$poiId") },
-                    onBack = { navController.popBackStack() }
-                )
-            }
-
-        composable(
-            route = "trivia/{poiId}",
-            arguments = listOf(navArgument("poiId") { type = NavType.LongType }) ) {
-                back -> val poiId = back.arguments?.getLong("poiId") ?: 0L
-                    TriviaScreen(
-                        poiId = poiId,
-                        onFinish = { navController.popBackStack() }
-                    )
-            }
-
-        composable(
-            route = "map/{poiId}",
-            arguments = listOf(navArgument("poiId") { type = NavType.LongType })) {
-                back -> val poiId = back.arguments?.getLong("poiId") ?: 0L
-                    MapScreen(
-                        poiId = poiId,
-                        onBack = { navController.popBackStack() }
-                    )
-                }
-
-    }
-}
-=======
                 navArgument("poiId") { type = NavType.LongType }
             )
-        ) { back ->
-            val routeId = back.arguments?.getLong("routeId") ?: 0L
-            val poiId = back.arguments?.getLong("poiId") ?: 0L
+        ) { backStackEntry ->
+            val routeId = backStackEntry.arguments?.getLong("routeId") ?: 0L
+            val poiId = backStackEntry.arguments?.getLong("poiId") ?: 0L
             PoiDetailScreen(
                 routeId = routeId,
                 poiId = poiId,
-                onOpenMap = { navController.navigate("map/$poiId") },
-                onStartTrivia = { navController.navigate("trivia/$poiId") },
                 onBack = { navController.popBackStack() },
-                onReturnToHome = { navController.navigate("main") { popUpTo("main") { inclusive = true } } }
+                onOpenMap = { navController.navigate("map/$poiId") },
+                onOpenTrivia = { navController.navigate("trivia/$poiId") }
             )
         }
 
@@ -279,7 +109,7 @@ fun AppNavigation() {
             route = "map/{poiId}",
             arguments = listOf(navArgument("poiId") { type = NavType.LongType })
         ) { back ->
-            val poiId = back.arguments?.getLong("poiId") ?: 0L
+            val poiId = back.arguments?.getLong("poiId") ?: 0
             MapScreen(
                 poiId = poiId,
                 onBack = { navController.popBackStack() }
@@ -287,4 +117,3 @@ fun AppNavigation() {
         }
     }
 }
->>>>>>> origin/2.3-2.4-terminado

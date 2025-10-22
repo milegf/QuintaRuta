@@ -5,12 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quintaruta.data.MockData
 import com.example.quintaruta.data.repository.UserRepository
-import com.example.quintaruta.model.PointOfInterest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+// TODO: ARREGLAR ESTE ARCHIVO, FALTAN IMPORTACIONES PARA QUE FUNCIONE
 
 data class RouteDetailUiState(
     val pois: List<PointOfInterest> = emptyList(),

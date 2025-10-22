@@ -6,6 +6,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -15,7 +16,8 @@ fun PoiDetailScreen(
     poiId: Long,
     onOpenMap: () -> Unit,
     onStartTrivia: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onReturnToHome: () -> Unit // Nuevo parámetro
 ) {
     Column(
         modifier = Modifier
@@ -46,8 +48,16 @@ fun PoiDetailScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
-            Text("Volver")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(onClick = onBack, modifier = Modifier.weight(1f)) {
+                Text("Volver")
+            }
+            Button(onClick = onReturnToHome, modifier = Modifier.weight(1f)) {
+                Text("Volver al Inicio")
+            }
         }
     }
 }

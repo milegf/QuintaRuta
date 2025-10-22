@@ -1,15 +1,30 @@
 package com.example.quintaruta.ui.navigation
 
+<<<<<<< HEAD
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+=======
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+>>>>>>> origin/2.3-2.4-terminado
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quintaruta.data.repository.UserRepository
+<<<<<<< HEAD
+=======
+import com.example.quintaruta.ui.screens.CreateOrEditRouteScreen
+import com.example.quintaruta.ui.screens.EditProfileScreen
+>>>>>>> origin/2.3-2.4-terminado
 import com.example.quintaruta.ui.screens.ExploreScreen
 import com.example.quintaruta.ui.screens.LoginScreen
 import com.example.quintaruta.ui.screens.MainScreen
@@ -19,7 +34,12 @@ import com.example.quintaruta.ui.screens.ProfileScreen
 import com.example.quintaruta.ui.screens.RegisterScreen
 import com.example.quintaruta.ui.screens.RouteDetailScreen
 import com.example.quintaruta.ui.screens.TriviaScreen
+<<<<<<< HEAD
 import com.example.quintaruta.ui.screens.CreateOrEditRouteScreen
+=======
+import com.example.quintaruta.viewmodel.CreateOrEditRouteViewModel
+import com.example.quintaruta.viewmodel.ProfileViewModel
+>>>>>>> origin/2.3-2.4-terminado
 
 @Composable
 fun AppNavigation() {
@@ -48,7 +68,10 @@ fun AppNavigation() {
                 onOpenExplore = { navController.navigate("explore") },
                 onOpenProfile = { navController.navigate("profile") },
                 onCreateRoute = { navController.navigate("create_route") }
+<<<<<<< HEAD
                 // onLogout = { userRepo.logout(); navController.navigate("login") { popUpTo("main"){ inclusive = true } } }
+=======
+>>>>>>> origin/2.3-2.4-terminado
             )
         }
 
@@ -59,6 +82,7 @@ fun AppNavigation() {
             )
         }
 
+<<<<<<< HEAD
         // VERSION DEMO
         composable("profile") {
             ProfileScreen(
@@ -94,12 +118,50 @@ fun AppNavigation() {
             CreateOrEditRouteScreen(
                 routeId = null,
                 onSaved = { newId -> navController.navigate("route_detail/$newId") },
+=======
+        composable("profile") {
+            val profileViewModel: ProfileViewModel = viewModel()
+            val uiState by profileViewModel.uiState.collectAsState()
+
+            // Forzamos la recarga de datos al entrar en la pantalla
+            LaunchedEffect(Unit) {
+                profileViewModel.loadProfileData()
+            }
+
+            ProfileScreen(
+                uiState = uiState,
+                onEditRoute = { routeId -> navController.navigate("edit_route/$routeId") },
+                onDeleteRoute = { routeId -> profileViewModel.deleteRoute(routeId) },
+                onEditProfileClick = { navController.navigate("edit_profile") }
+            )
+        }
+
+        composable("edit_profile") {
+            val editProfileViewModel: ProfileViewModel = viewModel()
+            val uiState by editProfileViewModel.uiState.collectAsState()
+
+            EditProfileScreen(
+                currentName = uiState.userName,
+                onSave = {
+                    editProfileViewModel.updateUserName(it)
+                    navController.popBackStack()
+                },
+                onCancel = { navController.popBackStack() }
+            )
+        }
+
+        composable("create_route") {
+            CreateOrEditRouteScreen(
+                routeId = null, // null para indicar que es una creación
+                onSaved = { newId -> navController.navigate("route_detail/$newId") { popUpTo("explore") } },
+>>>>>>> origin/2.3-2.4-terminado
                 onCancel = { navController.popBackStack() }
             )
         }
 
         composable(
             route = "edit_route/{routeId}",
+<<<<<<< HEAD
             arguments = listOf(navArgument("routeId") { type = NavType.LongType })) {
                 back -> val routeId = back.arguments?.getLong("routeId") ?: 0L
                 CreateOrEditRouteScreen(
@@ -119,11 +181,38 @@ fun AppNavigation() {
                     onBack = { navController.popBackStack() }
                 )
             }
+=======
+            arguments = listOf(navArgument("routeId") { type = NavType.LongType })
+        ) {
+            val routeId = it.arguments?.getLong("routeId") ?: 0L
+            CreateOrEditRouteScreen(
+                routeId = routeId,
+                onSaved = {
+                    // Navegación especial para forzar la actualización del perfil
+                    navController.popBackStack()
+                    navController.navigate("profile") { popUpTo("profile") { inclusive = true } }
+                },
+                onCancel = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = "route_detail/{routeId}",
+            arguments = listOf(navArgument("routeId") { type = NavType.LongType })
+        ) { back ->
+            val routeId = back.arguments?.getLong("routeId") ?: 0L
+            RouteDetailScreen(
+                routeId = routeId,
+                onReturnToHome = { navController.navigate("main") { popUpTo("main") { inclusive = true } } }
+            )
+        }
+>>>>>>> origin/2.3-2.4-terminado
 
         composable(
             route = "poi_detail/{routeId}/{poiId}",
             arguments = listOf(
                 navArgument("routeId") { type = NavType.LongType },
+<<<<<<< HEAD
                 navArgument("poiId") { type = NavType.LongType })) {
                 back ->
                     val routeId = back.arguments?.getLong("routeId") ?: 0L
@@ -159,3 +248,43 @@ fun AppNavigation() {
 
     }
 }
+=======
+                navArgument("poiId") { type = NavType.LongType }
+            )
+        ) { back ->
+            val routeId = back.arguments?.getLong("routeId") ?: 0L
+            val poiId = back.arguments?.getLong("poiId") ?: 0L
+            PoiDetailScreen(
+                routeId = routeId,
+                poiId = poiId,
+                onOpenMap = { navController.navigate("map/$poiId") },
+                onStartTrivia = { navController.navigate("trivia/$poiId") },
+                onBack = { navController.popBackStack() },
+                onReturnToHome = { navController.navigate("main") { popUpTo("main") { inclusive = true } } }
+            )
+        }
+
+        composable(
+            route = "trivia/{poiId}",
+            arguments = listOf(navArgument("poiId") { type = NavType.LongType })
+        ) { back ->
+            val poiId = back.arguments?.getLong("poiId") ?: 0L
+            TriviaScreen(
+                poiId = poiId,
+                onFinish = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = "map/{poiId}",
+            arguments = listOf(navArgument("poiId") { type = NavType.LongType })
+        ) { back ->
+            val poiId = back.arguments?.getLong("poiId") ?: 0L
+            MapScreen(
+                poiId = poiId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+    }
+}
+>>>>>>> origin/2.3-2.4-terminado

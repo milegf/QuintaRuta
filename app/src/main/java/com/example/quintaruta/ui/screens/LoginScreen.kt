@@ -21,6 +21,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(true) } // Estado para el Checkbox
     val loginState by loginViewModel.loginState.observeAsState(UiState.Idle)
     val isLoading = loginState is UiState.Loading
     val snackbarHostState = remember { SnackbarHostState() }
@@ -37,8 +38,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val isLoading = loginState is UiState.Loading
-
             Icon(
                 imageVector = Icons.Default.Map,
                 contentDescription = "Logo",
@@ -71,6 +70,19 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
                 singleLine = true
             )
 
+            // Checkbox para "Recuérdame"
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it },
+                    enabled = !isLoading
+                )
+                Text(text = "Recuérdame")
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             if (isLoading) {
@@ -79,7 +91,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
                 Button(
                     onClick = {
                         if (email.isNotBlank() && password.isNotBlank()) {
-                            loginViewModel.login(email, password)
+                            // Pasar el valor de rememberMe al ViewModel
+                            loginViewModel.login(email, password, rememberMe)
                         } else {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar("Completa todos los campos")
@@ -87,7 +100,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit, lo
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    // TODO: ARREGLAR PARA QUE FUNCIONE ISLOADING
                     enabled = !isLoading
                 ) {
                     Text("Iniciar Sesión")

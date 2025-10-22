@@ -1,6 +1,5 @@
 package com.example.quintaruta.ui.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -10,16 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quintaruta.data.repository.UserRepository
-import com.example.quintaruta.ui.screens.ExploreScreen
-import com.example.quintaruta.ui.screens.LoginScreen
-import com.example.quintaruta.ui.screens.MainScreen
-import com.example.quintaruta.ui.screens.MapScreen
-import com.example.quintaruta.ui.screens.PoiDetailScreen
-import com.example.quintaruta.ui.screens.ProfileScreen
-import com.example.quintaruta.ui.screens.RegisterScreen
-import com.example.quintaruta.ui.screens.RouteDetailScreen
-import com.example.quintaruta.ui.screens.TriviaScreen
-import com.example.quintaruta.ui.screens.CreateOrEditRouteScreen
+import com.example.quintaruta.ui.screens.*
 
 @Composable
 fun AppNavigation() {
@@ -38,124 +28,92 @@ fun AppNavigation() {
         }
 
         composable("register") {
-            RegisterScreen(
-                onRegisterSuccess = { navController.popBackStack() }
-            )
+            RegisterScreen(onRegisterSuccess = { navController.popBackStack() })
         }
 
         composable("main") {
             MainScreen(
                 onOpenExplore = { navController.navigate("explore") },
-                onOpenProfile = { navController.navigate("profile") },
-                onCreateRoute = { navController.navigate("create_route") }
-                // onLogout = { userRepo.logout(); navController.navigate("login") { popUpTo("main"){ inclusive = true } } }
+                onCreateRoute = { navController.navigate("create_route") },
+                onOpenProfile = { navController.navigate("profile") }
             )
         }
 
         composable("explore") {
-            ExploreScreen(
-                onRouteClick = { routeId -> navController.navigate("route_detail/$routeId") },
-                onCreateRoute = { navController.navigate("create_route") }
-            )
+            ExploreScreen(onRutaClick = { ruta ->
+                navController.navigate("routeDetail/${ruta.id}")
+            })
         }
-
-        // VERSION DEMO
-        composable("profile") {
-            ProfileScreen(
-                userName = "Patana",
-                userEmail = "patana@trufillo.cl",
-                profileImageUrl = null,
-                userRoutes = emptyList(), // o lista vacía
-                onEditRoute = { routeId ->
-                    navController.navigate("edit_route/$routeId")
-                }
-            )
-        }
-
-        // TODO: CAMBIAR PROFILE A VERSION FINAL
-        /*composable("profile") {
-            val profileViewModel: ProfileViewModel = viewModel()
-            val user = profileViewModel.user
-            val routes = profileViewModel.userRoutes
-
-            ProfileScreen(
-                userName = user.name,
-                userEmail = user.email,
-                profileImageUrl = user.photoUrl,
-                userRoutes = routes,
-                onEditRoute = { routeId ->
-                    navController.navigate("edit_route/$routeId")
-                }
-            )
-        }*/
-
 
         composable("create_route") {
             CreateOrEditRouteScreen(
                 routeId = null,
-                onSaved = { newId -> navController.navigate("route_detail/$newId") },
+                onSaved = { newId -> navController.navigate("routeDetail/$newId") },
                 onCancel = { navController.popBackStack() }
             )
         }
 
         composable(
-            route = "edit_route/{routeId}",
-            arguments = listOf(navArgument("routeId") { type = NavType.LongType })) {
-                back -> val routeId = back.arguments?.getLong("routeId") ?: 0L
-                CreateOrEditRouteScreen(
-                    routeId = routeId,
-                    onSaved = { navController.popBackStack() },
-                    onCancel = { navController.popBackStack() }
-                )
-            }
+            "edit_route/{routeId}",
+            arguments = listOf(navArgument("routeId") { type = NavType.LongType })
+        ) { back ->
+            val routeId = back.arguments?.getLong("routeId") ?: 0L
+            CreateOrEditRouteScreen(
+                routeId = routeId,
+                onSaved = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() }
+            )
+        }
 
-        composable(
-            route = "route_detail/{routeId}",
-            arguments = listOf(navArgument("routeId") { type = NavType.LongType }) ) {
-                back -> val routeId = back.arguments?.getLong("routeId") ?: 0L
-                RouteDetailScreen(
-                    routeId = routeId,
-                    onPoiClick = { poiId -> navController.navigate("poi_detail/$routeId/$poiId") },
-                    onBack = { navController.popBackStack() }
-                )
-            }
+        composable("routeDetail/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id")?.toInt() ?: 0
+            RouteDetailScreen(
+                routeId = id,
+                onBack = { navController.popBackStack() },
+                onPoiClick = { poi ->
+                    navController.navigate("poi_detail/$id/${poi.id}")
+                }
+            )
+        }
 
         composable(
             route = "poi_detail/{routeId}/{poiId}",
             arguments = listOf(
                 navArgument("routeId") { type = NavType.LongType },
-                navArgument("poiId") { type = NavType.LongType })) {
-                back ->
-                    val routeId = back.arguments?.getLong("routeId") ?: 0L
-                    val poiId = back.arguments?.getLong("poiId") ?: 0L
-                PoiDetailScreen(
-                    routeId = routeId,
-                    poiId = poiId,
-                    onOpenMap = { navController.navigate("map/$poiId") },
-                    onStartTrivia = { navController.navigate("trivia/$poiId") },
-                    onBack = { navController.popBackStack() }
-                )
-            }
+                navArgument("poiId") { type = NavType.LongType }
+            )
+        ) { backStackEntry ->
+            val routeId = backStackEntry.arguments?.getLong("routeId") ?: 0L
+            val poiId = backStackEntry.arguments?.getLong("poiId") ?: 0L
+            PoiDetailScreen(
+                routeId = routeId,
+                poiId = poiId,
+                onBack = { navController.popBackStack() },
+                onOpenMap = { navController.navigate("map/$poiId") },
+                onOpenTrivia = { navController.navigate("trivia/$poiId") }
+            )
+        }
 
         composable(
             route = "trivia/{poiId}",
-            arguments = listOf(navArgument("poiId") { type = NavType.LongType }) ) {
-                back -> val poiId = back.arguments?.getLong("poiId") ?: 0L
-                    TriviaScreen(
-                        poiId = poiId,
-                        onFinish = { navController.popBackStack() }
-                    )
-            }
+            arguments = listOf(navArgument("poiId") { type = NavType.LongType })
+        ) { back ->
+            val poiId = back.arguments?.getLong("poiId") ?: 0L
+            TriviaScreen(
+                poiId = poiId,
+                onFinish = { navController.popBackStack() }
+            )
+        }
 
         composable(
             route = "map/{poiId}",
-            arguments = listOf(navArgument("poiId") { type = NavType.LongType })) {
-                back -> val poiId = back.arguments?.getLong("poiId") ?: 0L
-                    MapScreen(
-                        poiId = poiId,
-                        onBack = { navController.popBackStack() }
-                    )
-                }
-
+            arguments = listOf(navArgument("poiId") { type = NavType.LongType })
+        ) { back ->
+            val poiId = back.arguments?.getLong("poiId") ?: 0
+            MapScreen(
+                poiId = poiId,
+                onBack = { navController.popBackStack() }
+            )
+        }
     }
 }

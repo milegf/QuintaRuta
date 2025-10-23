@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         val database = AppDatabase.getDatabase(applicationContext)
         val triviaRepository = TriviaRepository(database.triviaDao())
 
-        DataSeeder.seedTrivias(triviaRepository)
+        DataSeeder.seedAll(database)
 
         setContent {
             QuintaRutaTheme {

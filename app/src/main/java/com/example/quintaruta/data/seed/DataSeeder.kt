@@ -60,7 +60,7 @@ object DataSeeder {
                         descripcion = "Famoso por su vista panorámica del puerto de Valparaíso.",
                         latitud = -33.0381,
                         longitud = -71.6297,
-                        imagenUrl = "badge-mirador-21-mayo.png"
+                        imagenUrl = "badge_mirador_21_mayo.png"
                     ),
                     PoiEntity(
                         id = 2L,
@@ -69,7 +69,7 @@ object DataSeeder {
                         descripcion = "Ubicado en Cerro Alegre, rodeado de coloridos murales y arte urbano.",
                         latitud = -33.0412,
                         longitud = -71.6279,
-                        imagenUrl = "badge-mirador-esperanza.png"
+                        imagenUrl = "badge_mirador_esperanza.png"
                     ),
                     PoiEntity(
                         id = 3L,
@@ -78,7 +78,7 @@ object DataSeeder {
                         descripcion = "En Camino Cintura, ofrece una vista del anfiteatro natural de Valparaíso.",
                         latitud = -33.0408,
                         longitud = -71.6199,
-                        imagenUrl = "badge-mirador-neruda.png"
+                        imagenUrl = "badge_mirador_neruda.png"
                     ),
                     PoiEntity(
                         id = 4L,
@@ -87,7 +87,7 @@ object DataSeeder {
                         descripcion = "Mirador con vista al mar y la costa, ideal para ver atardeceres.",
                         latitud = -33.0325,
                         longitud = -71.6368,
-                        imagenUrl = "badge-mirador-portales.png"
+                        imagenUrl = "badge_mirador_portales.png"
                     ),
                     PoiEntity(
                         id = 5L,
@@ -96,7 +96,7 @@ object DataSeeder {
                         descripcion = "Mirador con vista panorámica a las playas de Viña del Mar.",
                         latitud = -32.9674,
                         longitud = -71.5512,
-                        imagenUrl = "badge-mirador-renaca.png"
+                        imagenUrl = "badge_mirador_renaca.png"
                     )
                 )
 
@@ -108,7 +108,7 @@ object DataSeeder {
                         descripcion = "Tradicional playa de Viña del Mar, ideal para descansar y disfrutar del sol.",
                         latitud = -33.0173,
                         longitud = -71.5552,
-                        imagenUrl = "badge-costa-acapulco-marineros.png"
+                        imagenUrl = "badge_costa_acapulco_marineros.png"
                     ),
                     PoiEntity(
                         id = 7L,
@@ -117,7 +117,7 @@ object DataSeeder {
                         descripcion = "Famosa por su cercanía al Reloj de Flores y el Castillo Wulff.",
                         latitud = -33.0235,
                         longitud = -71.5507,
-                        imagenUrl = "badge-costa-caleta-abarca.png"
+                        imagenUrl = "badge_costa_caleta_abarca.png"
                     ),
                     PoiEntity(
                         id = 8L,
@@ -126,7 +126,7 @@ object DataSeeder {
                         descripcion = "Mirador con vista hacia Reñaca y Concón, perfecto para observar aves marinas.",
                         latitud = -32.9537,
                         longitud = -71.5274,
-                        imagenUrl = "badge-costa-cochoa.png"
+                        imagenUrl = "badge_costa_cochoa.png"
                     ),
                     PoiEntity(
                         id = 9L,
@@ -135,7 +135,7 @@ object DataSeeder {
                         descripcion = "Histórico muelle reconvertido en paseo peatonal con vistas al mar.",
                         latitud = -33.0102,
                         longitud = -71.5517,
-                        imagenUrl = "badge-costa-muelle-vergara.png"
+                        imagenUrl = "badge_costa_muelle_vergara.png"
                     ),
                     PoiEntity(
                         id = 10L,
@@ -144,7 +144,7 @@ object DataSeeder {
                         descripcion = "Símbolo icónico de Viña del Mar, con su diseño floral y mecánico.",
                         latitud = -33.0275,
                         longitud = -71.5510,
-                        imagenUrl = "badge-costa-reloj-flores.png"
+                        imagenUrl = "badge_costa_reloj_flores.png"
                     )
                 )
 

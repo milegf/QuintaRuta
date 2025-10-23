@@ -20,7 +20,8 @@ import com.example.quintaruta.viewmodel.TriviaViewModel
 @Composable
 fun TriviaScreen(
     poiId: Long,
-    viewModel: TriviaViewModel
+    viewModel: TriviaViewModel,
+    onFinish: () -> Unit
 ) {
     val context = LocalContext.current
     val trivias by viewModel.trivias.collectAsStateWithLifecycle()

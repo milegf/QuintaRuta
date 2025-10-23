@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 import androidx.room.ColumnInfo
+import androidx.room.Index
 
 @Entity(
     tableName = "trivias",
@@ -14,26 +15,22 @@ import androidx.room.ColumnInfo
             childColumns = ["poi_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["poi_id"])]
 )
 
 data class TriviaEntity(
 
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-
     @ColumnInfo(name = "poi_id")
     val poiId: Long,
-
     val pregunta: String,
-
     val opA: String,
     val opB: String,
     val opC: String,
     val opD: String,
-
     @ColumnInfo(name = "respuesta_correcta")
     val respuestaCorrecta: String,
-
     val respondida: Boolean = false
 )

@@ -18,11 +18,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val _loginState = MutableLiveData<UiState<Unit>>(UiState.Idle)
     val loginState: LiveData<UiState<Unit>> = _loginState
 
-<<<<<<< HEAD
-    fun login(email: String, password: String) {
-=======
     fun login(email: String, password: String, rememberMe: Boolean) { // <-- Parámetro añadido
->>>>>>> origin/2.3-2.4-terminado
         if (email.isBlank() || password.isBlank()) {
             _loginState.value = UiState.Error("Por favor, completa todos los campos.")
             return
@@ -35,12 +31,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             _loginState.postValue(UiState.Loading)
             try {
-<<<<<<< HEAD
-                val success = userRepository.login(email, password)
-=======
-                // Pasar el nuevo parámetro a la función del repositorio
-                val success = userRepository.login(email, password, rememberMe)
->>>>>>> origin/2.3-2.4-terminado
+                val success = userRepository.login(email, password) // Agregar RememberMe
                 if (success) {
                     _loginState.postValue(UiState.Success(Unit))
                 } else {

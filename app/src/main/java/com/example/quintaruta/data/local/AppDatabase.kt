@@ -12,7 +12,8 @@ import com.example.quintaruta.data.local.entity.*
                 RutaEntity::class,
                 PoiEntity::class,
                 TriviaEntity::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

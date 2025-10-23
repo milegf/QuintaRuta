@@ -22,7 +22,7 @@ import com.example.quintaruta.data.model.Poi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RouteDetailScreen(
-    routeId: Int,
+    routeId: Long,
     onBack: () -> Unit,
     onPoiClick: (Poi) -> Unit,
     rutaViewModel: RutaViewModel = viewModel(),

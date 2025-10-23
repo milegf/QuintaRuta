@@ -1,9 +1,5 @@
-package com.example.quintaruta.utils
+package com.example.quintaruta.util
 
-/**
- * A generic class that holds a value with its loading status.
- * @param <T>
- */
 sealed class UiState<out T> {
     object Idle : UiState<Nothing>()
     object Loading : UiState<Nothing>()
